@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/server.js",
-    "queue": "nodemon src/queue.js"
+    "queue": "nodemon src/queue.js",
+    "build": "sucrase ./src -d ./dist --transforms imports"
   },
   "author": "Guilherme Costa",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "@sentry/node": "^5.13.2",
     "bcryptjs": "^2.4.3",
     "bee-queue": "^1.2.3",
+    "cors": "^2.8.5",
     "date-fns": "^2.10.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
