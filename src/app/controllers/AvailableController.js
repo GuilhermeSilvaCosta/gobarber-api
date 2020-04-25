@@ -1,7 +1,8 @@
 import {
-    startOfDay, endOfDay, setHours, setMinutes, setSeconds, format, isAfter,
+    startOfDay, endOfDay, setHours, setMinutes, setSeconds, format, isAfter, parseISO,
 } from 'date-fns';
 import { Op } from 'sequelize';
+import { zonedTimeToUtc } from 'date-fns-tz';
 import Appointment from '../models/Appointment';
 
 class AvailableController {
@@ -12,7 +13,7 @@ class AvailableController {
             return res.status(400).json({ error: 'Invalid date' });
         }
 
-        const searchDate = Number(date);
+        const searchDate = zonedTimeToUtc(parseISO(date), 'America/Sao_Paulo');
 
         const appointments = await Appointment.findAll({
             where: {
