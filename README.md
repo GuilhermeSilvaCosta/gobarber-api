@@ -1,7 +1,7 @@
-### `View frontend``
+### `View frontend`
 
 https://github.com/GuilhermeSilvaCosta/gobarber-web
 
-### `View mobile``
+### `View mobile`
 
 https://github.com/GuilhermeSilvaCosta/gobarber-mobile
