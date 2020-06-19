@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import Brute from 'express-brute';
+import BruteRedis from 'express-brute-redis';
 import multer from 'multer';
 import multerConfig from './config/multer';
 
@@ -12,22 +14,34 @@ import ScheduleController from './app/controllers/ScheduleController';
 import NotificationController from './app/controllers/NotificationController';
 import AvailableController from './app/controllers/AvailableController';
 
+import validatorAppointmentStore from './app/validators/AppointmentStore';
+import validatorSessionStore from './app/validators/SessionStore';
+import validatorUserStore from './app/validators/UserStore';
+import validatorUserUpdate from './app/validators/UserUpdate';
+
 const routes = new Router();
 const upload = multer(multerConfig);
 
-routes.post('/users', UserController.store);
-routes.post('/sessions', SessionController.store);
+const bruteStore = new BruteRedis({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+});
+
+const bruteForce = new Brute(bruteStore);
+
+routes.post('/users', validatorUserStore, UserController.store);
+routes.post('/sessions', bruteForce.prevent, validatorSessionStore, SessionController.store);
 
 routes.use(authMiddleware);
 
-routes.put('/users', UserController.update);
+routes.put('/users', validatorUserUpdate, UserController.update);
 
 routes.get('/providers', ProviderController.index);
 routes.get('/providers/:providerId/available', AvailableController.index);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
-routes.post('/appointments', AppointmentController.store);
+routes.post('/appointments', validatorAppointmentStore, AppointmentController.store);
 routes.get('/appointments', AppointmentController.index);
 routes.delete('/appointments/:id', AppointmentController.delete);
 
