@@ -13,6 +13,7 @@ import RateLimitRedis from 'rate-limit-redis';
 
 import routes from './routes';
 import sentryConfig from './config/sentry';
+import redisConfig from './config/redis';
 
 import './database';
 
@@ -35,10 +36,7 @@ class App {
         this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')));
         this.server.use(new RateLimit({
             store: new RateLimitRedis({
-                client: redis.createClient({
-                    host: process.env.REDIS_HOST,
-                    port: process.env.REDIS_PORT,
-                }),
+                client: redis.createClient(redisConfig),
             }),
             windowMS: 1000 * 60 * 15,
             max: 10,
