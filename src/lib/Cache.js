@@ -3,7 +3,6 @@ import redisConfig from '../config/redis';
 
 class Cache {
     constructor() {
-        console.log(redisConfig);
         this.redis = new Redis({
             ...redisConfig,
             keyPrefix: 'cache:',
