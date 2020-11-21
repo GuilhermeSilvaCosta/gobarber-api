@@ -2,6 +2,8 @@ import { Router } from 'express';
 import Brute from 'express-brute';
 import BruteRedis from 'express-brute-redis';
 import multer from 'multer';
+import Redis from 'ioredis';
+
 import multerConfig from './config/multer';
 import redisOptions from './config/redis';
 
@@ -23,7 +25,8 @@ import validatorUserUpdate from './app/validators/UserUpdate';
 const routes = new Router();
 const upload = multer(multerConfig);
 
-const bruteStore = new BruteRedis(redisOptions);
+const clientRedis = new Redis(redisOptions);
+const bruteStore = new BruteRedis(clientRedis);
 
 const bruteForce = new Brute(bruteStore);
 
