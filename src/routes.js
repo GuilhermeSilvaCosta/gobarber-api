@@ -25,8 +25,8 @@ import validatorUserUpdate from './app/validators/UserUpdate';
 const routes = new Router();
 const upload = multer(multerConfig);
 
-const clientRedis = new Redis(redisOptions);
-const bruteStore = new BruteRedis(clientRedis);
+const client = new Redis(redisOptions);
+const bruteStore = new BruteRedis({ client });
 
 const bruteForce = new Brute(bruteStore);
 
